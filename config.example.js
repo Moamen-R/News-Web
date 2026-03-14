@@ -1,6 +1,9 @@
 // ============================================================
-// API Configuration – replace the placeholder values below
-// with your own free-tier keys before running the project.
+// API Configuration Template
+// ============================================================
+// 1. Copy this file to config.js  (cp config.example.js config.js)
+// 2. Replace every "YOUR_..." placeholder with your real API key.
+// 3. config.js is listed in .gitignore and will NOT be committed.
 // ============================================================
 
 const CONFIG = {
@@ -16,7 +19,7 @@ const CONFIG = {
   // https://www.exchangerate-api.com – free tier: 1 500 req/month
   EXCHANGE_API_KEY: "YOUR_EXCHANGE_API_KEY",
 
-  // Default league for matches/table/stats pages
-  // 3 = UEFA Champions League  |  4 = Serie A  |  207 = Premier League (example IDs)
-  DEFAULT_LEAGUE_ID: "152", // Premier League (AllSportsAPI ID)
+  // Default league for matches / table / stats pages
+  // 152 = Premier League  |  3 = UEFA Champions League  |  4 = Serie A
+  DEFAULT_LEAGUE_ID: "152",
 };
