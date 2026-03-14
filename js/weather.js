@@ -1,7 +1,3 @@
-/**
- * weather.js – Detects user location and renders the weather widget.
- * Uses the OpenWeatherMap Current Weather API.
- */
 
 const OWM_BASE = "https://api.openweathermap.org/data/2.5/weather";
 
@@ -18,12 +14,6 @@ const OWM_ICON_MAP = {
   "50d": "🌫️", "50n": "🌫️",
 };
 
-/**
- * Fetch weather data for given coordinates.
- * @param {number} lat
- * @param {number} lon
- * @returns {Promise<Object>}
- */
 async function fetchWeather(lat, lon) {
   const params = new URLSearchParams({
     lat,
@@ -36,11 +26,6 @@ async function fetchWeather(lat, lon) {
   return res.json();
 }
 
-/**
- * Render weather data into the widget element.
- * @param {Object} data  – OWM response
- * @param {HTMLElement} el
- */
 function renderWeather(data, el) {
   const icon = OWM_ICON_MAP[data.weather[0]?.icon] || "🌤️";
   const city = data.name || "Unknown";
@@ -74,11 +59,6 @@ async function initWeather() {
   }
 }
 
-/**
- * Resolve the user's geographic coordinates.
- * Returns a fallback (Cairo, Egypt) if geolocation is denied.
- * @returns {Promise<{lat: number, lon: number}>}
- */
 function getUserCoords() {
   return new Promise((resolve) => {
     if (!navigator.geolocation) {

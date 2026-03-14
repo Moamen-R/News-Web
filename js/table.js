@@ -1,7 +1,4 @@
-/**
- * table.js – Fetches and renders league standings table.
- * Uses AllSportsAPI.
- */
+
 
 const ALLSPORTS_TABLE_BASE = "https://apiv2.allsportsapi.com/football/";
 
@@ -16,27 +13,24 @@ async function fetchStandings() {
   const res = await fetch(`${ALLSPORTS_TABLE_BASE}?${params}`);
   if (!res.ok) throw new Error(`AllSportsAPI error ${res.status}`);
   const data = await res.json();
-  // AllSportsAPI returns nested: data.result[0].total (overall standings)
-  const standings = data.result?.[0]?.total || data.result || [];
-  return Array.isArray(standings) ? standings : [];
+  // AllSportsAPI returns: data.result.total (overall standings array)
+  // or sometimes data.result as a direct array
+  const result = data.result;
+  if (Array.isArray(result)) return result;
+  if (result?.total && Array.isArray(result.total)) return result.total;
+  return [];
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
 
-/**
- * Get rank-badge class based on position (rough Premier League rules).
- */
 function rankBadgeClass(pos) {
   const n = parseInt(pos, 10);
-  if (n <= 4)  return "rank-badge rank-badge--cl";
-  if (n <= 6)  return "rank-badge rank-badge--el";
+  if (n <= 4) return "rank-badge rank-badge--cl";
+  if (n <= 6) return "rank-badge rank-badge--el";
   if (n >= 18) return "rank-badge rank-badge--rel";
   return "rank-badge rank-badge--default";
 }
 
-/**
- * Goal-difference CSS class.
- */
+
 function gdClass(gd) {
   const v = parseInt(gd, 10);
   if (v > 0) return "gd-positive";
@@ -53,30 +47,33 @@ function renderStandings(standings) {
     return;
   }
 
-  tbody.innerHTML = standings.map((team) => {
-    const pos  = team.standing_place || team.league_round || "–";
-    const logo = team.team_logo || "";
-    const name = team.standing_team || team.team_name || "Unknown";
-    const p    = team.standing_P  ?? team.overall_league_payed ?? "–";
-    const w    = team.standing_W  ?? team.overall_league_W     ?? "–";
-    const d    = team.standing_D  ?? team.overall_league_D     ?? "–";
-    const l    = team.standing_L  ?? team.overall_league_L     ?? "–";
-    const gf   = team.standing_F  ?? team.overall_league_GF    ?? "–";
-    const ga   = team.standing_A  ?? team.overall_league_GA    ?? "–";
-    const gd   = team.standing_GD ?? (
-      (parseInt(gf, 10) || 0) - (parseInt(ga, 10) || 0)
-    ) ?? "–";
-    const pts  = team.standing_PTS ?? team.overall_league_PTS  ?? "–";
+  tbody.innerHTML = standings
+    .map((team) => {
+      const pos = team.standing_place || team.league_round || "–";
+      const logo = team.team_logo || "";
+      const name = team.standing_team || team.team_name || "Unknown";
+      const p = team.standing_P ?? team.overall_league_payed ?? "–";
+      const w = team.standing_W ?? team.overall_league_W ?? "–";
+      const d = team.standing_D ?? team.overall_league_D ?? "–";
+      const l = team.standing_L ?? team.overall_league_L ?? "–";
+      const gf = team.standing_F ?? team.overall_league_GF ?? "–";
+      const ga = team.standing_A ?? team.overall_league_GA ?? "–";
+      const gd =
+        team.standing_GD ??
+        (parseInt(gf, 10) || 0) - (parseInt(ga, 10) || 0) ??
+        "–";
+      const pts = team.standing_PTS ?? team.overall_league_PTS ?? "–";
 
-    const logoEl = logo
-      ? `<img class="team-cell__logo" src="${escapeAttr(logo)}" alt="${escapeAttr(name)}" loading="lazy">`
-      : `<span aria-hidden="true">⚽</span>`;
+      const logoEl = logo
+        ? `<img class="team-cell__logo" src="${escapeAttr(logo)}" alt="${escapeAttr(name)}" loading="lazy">`
+        : `<span aria-hidden="true">⚽</span>`;
 
-    const gdVal = (typeof gd === "number" || !isNaN(parseInt(gd, 10)))
-      ? `<span class="${gdClass(gd)}">${gd > 0 ? "+" : ""}${gd}</span>`
-      : "–";
+      const gdVal =
+        typeof gd === "number" || !isNaN(parseInt(gd, 10))
+          ? `<span class="${gdClass(gd)}">${gd > 0 ? "+" : ""}${gd}</span>`
+          : "–";
 
-    return `
+      return `
       <tr>
         <td><span class="${rankBadgeClass(pos)}">${escapeHTML(String(pos))}</span></td>
         <td>${logoEl}</td>
@@ -90,7 +87,8 @@ function renderStandings(standings) {
         <td>${gdVal}</td>
         <td><strong>${escapeHTML(String(pts))}</strong></td>
       </tr>`;
-  }).join("");
+    })
+    .join("");
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────

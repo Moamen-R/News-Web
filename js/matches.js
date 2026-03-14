@@ -1,8 +1,3 @@
-/**
- * matches.js – Fetches and renders league match fixtures/results.
- * Includes filter by team name and date.
- * Uses AllSportsAPI.
- */
 
 const ALLSPORTS_MATCHES_BASE = "https://apiv2.allsportsapi.com/football/";
 

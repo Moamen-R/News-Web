@@ -1,17 +1,45 @@
-/**
- * news.js – Fetches and renders categorised news using the GNews API.
- */
 
 const GNEWS_BASE = "https://gnews.io/api/v4/search";
 const CATEGORIES = ["politics", "economy", "entertainment", "sports"];
 const ARTICLES_PER_ROW = 3;
+const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
+
+function getCachedNews(category) {
+  try {
+    const raw = localStorage.getItem(`gnews_${category}`);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (Date.now() - cached.timestamp > CACHE_TTL_MS) {
+      localStorage.removeItem(`gnews_${category}`);
+      return null;
+    }
+    return cached.articles;
+  } catch {
+    return null;
+  }
+}
 
 /**
- * Fetch articles for a given topic/category.
+ * Save news articles to localStorage cache.
  * @param {string} category
- * @returns {Promise<Array>}
+ * @param {Array} articles
  */
+function cacheNews(category, articles) {
+  try {
+    localStorage.setItem(`gnews_${category}`, JSON.stringify({
+      timestamp: Date.now(),
+      articles,
+    }));
+  } catch { /* storage full – ignore */ }
+}
+
 async function fetchNews(category) {
+  // 1. Return cached data if available and fresh
+  const cached = getCachedNews(category);
+  if (cached) return cached;
+
+  // 2. Otherwise hit the API
   const params = new URLSearchParams({
     q: category,
     lang: "en",
@@ -21,14 +49,14 @@ async function fetchNews(category) {
   const res = await fetch(`${GNEWS_BASE}?${params}`);
   if (!res.ok) throw new Error(`GNews API error ${res.status}`);
   const data = await res.json();
-  return data.articles || [];
+  const articles = data.articles || [];
+
+  // 3. Cache the result for next time
+  cacheNews(category, articles);
+  return articles;
 }
 
-/**
- * Create the DOM node for a single news article card.
- * @param {Object} article
- * @returns {HTMLElement}
- */
+
 function createArticleCard(article) {
   const card = document.createElement("a");
   card.href = article.url || "#";

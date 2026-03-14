@@ -1,7 +1,3 @@
-/* ============================================================
-   News Dashboard – Global Styles
-   ============================================================ */
-
 /* ---------- Reset & Variables ----------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -382,6 +378,18 @@ ul { list-style: none; }
   padding: .2rem .5rem;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+}
+
+.live-score__result { font-size: .95rem; }
+
+.live-score__status {
+  font-size: .65rem;
+  font-weight: 600;
+  opacity: .8;
 }
 
 /* ---------- Matches page ---------------------------------- */
@@ -629,20 +637,20 @@ ul { list-style: none; }
 
 .player-card__photo {
   width: 100%;
-  height: 120px;
-  object-fit: cover;
-  object-position: top;
-  background: var(--clr-border);
+  height: 180px;
+  object-fit: contain;
+  background: var(--clr-bg);
+  padding: 0.5rem;
 }
 
 .player-card__photo-placeholder {
   width: 100%;
-  height: 120px;
+  height: 180px;
   background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
 }
 
 .player-card__body { padding: .8rem; }

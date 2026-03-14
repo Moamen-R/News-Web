@@ -44,43 +44,11 @@
         <div class="stats-controls" role="toolbar" aria-label="Sort top scorers">
           <span style="font-size:.8rem;font-weight:600;color:var(--clr-muted);align-self:center;">Sort by:</span>
           <button class="sort-btn active" data-sort-section="scorers" data-sort-key="goals">Goals ↓</button>
-          <button class="sort-btn" data-sort-section="scorers" data-sort-key="yellow_cards">Yellow Cards</button>
-          <button class="sort-btn" data-sort-section="scorers" data-sort-key="red_cards">Red Cards</button>
+          <button class="sort-btn" data-sort-section="scorers" data-sort-key="assists">Assists</button>
+          <button class="sort-btn" data-sort-section="scorers" data-sort-key="penalty_goals">Penalty Goals</button>
         </div>
 
         <div class="stats-section__grid" id="scorers-grid" aria-live="polite">
-          <div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>
-        </div>
-      </section>
-
-      <!-- ── Yellow Cards ─────────────────────────────────────────────── -->
-      <section aria-labelledby="yellow-heading">
-        <h2 class="section-heading" id="yellow-heading">🟨 Yellow Cards</h2>
-
-        <div class="stats-controls" role="toolbar" aria-label="Sort yellow card leaders">
-          <span style="font-size:.8rem;font-weight:600;color:var(--clr-muted);align-self:center;">Sort by:</span>
-          <button class="sort-btn" data-sort-section="yellow" data-sort-key="goals">Goals</button>
-          <button class="sort-btn active" data-sort-section="yellow" data-sort-key="yellow_cards">Yellow Cards ↓</button>
-          <button class="sort-btn" data-sort-section="yellow" data-sort-key="red_cards">Red Cards</button>
-        </div>
-
-        <div class="stats-section__grid" id="yellow-grid" aria-live="polite">
-          <div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>
-        </div>
-      </section>
-
-      <!-- ── Red Cards ────────────────────────────────────────────────── -->
-      <section aria-labelledby="red-heading">
-        <h2 class="section-heading" id="red-heading">🟥 Red Cards</h2>
-
-        <div class="stats-controls" role="toolbar" aria-label="Sort red card leaders">
-          <span style="font-size:.8rem;font-weight:600;color:var(--clr-muted);align-self:center;">Sort by:</span>
-          <button class="sort-btn" data-sort-section="red" data-sort-key="goals">Goals</button>
-          <button class="sort-btn" data-sort-section="red" data-sort-key="yellow_cards">Yellow Cards</button>
-          <button class="sort-btn active" data-sort-section="red" data-sort-key="red_cards">Red Cards ↓</button>
-        </div>
-
-        <div class="stats-section__grid" id="red-grid" aria-live="polite">
           <div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>
         </div>
       </section>

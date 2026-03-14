@@ -1,12 +1,6 @@
-/**
- * exchange.js – Renders exchange-rate widget (USD→EGP, SAR→EGP)
- *              and the currency converter tool.
- * Uses ExchangeRate-API v6.
- */
 
 const EXCHANGE_BASE = "https://v6.exchangerate-api.com/v6";
 
-// Base currency for the widget rates display
 const WIDGET_BASE = "EGP";
 const WIDGET_PAIRS = ["USD", "SAR"];
 
@@ -20,11 +14,7 @@ const CURRENCIES = [
 /** Cache for fetched rates to reduce API calls */
 const ratesCache = {};
 
-/**
- * Fetch all exchange rates for a given base currency.
- * @param {string} baseCurrency
- * @returns {Promise<Object>}  map of currency -> rate
- */
+
 async function fetchRates(baseCurrency) {
   if (ratesCache[baseCurrency]) return ratesCache[baseCurrency];
   const res = await fetch(`${EXCHANGE_BASE}/${CONFIG.EXCHANGE_API_KEY}/latest/${baseCurrency}`);
@@ -37,9 +27,6 @@ async function fetchRates(baseCurrency) {
 
 // ── Widget ────────────────────────────────────────────────────────────────────
 
-/**
- * Render USD/SAR vs EGP rate cards.
- */
 async function initExchangeWidget() {
   const ratesEl = document.getElementById("rates-grid");
   if (!ratesEl) return;
@@ -50,11 +37,7 @@ async function initExchangeWidget() {
     const rates = await fetchRates(WIDGET_BASE);
 
     ratesEl.innerHTML = WIDGET_PAIRS.map((cur) => {
-      // How many EGP per 1 unit of cur
-      // rates[EGP] is relative to EGP base, so rates[USD] = EGP per USD
       const rate = rates[cur] ? (1 / rates[cur]).toFixed(4) : "N/A";
-      // Actually ExchangeRate-API base=EGP gives rates[USD] = how many USD per 1 EGP
-      // We want EGP per 1 USD → 1 / rates[USD]
       const egpPer1 = rates[cur] ? (1 / rates[cur]).toFixed(2) : "N/A";
       return `
         <div class="rate-card">

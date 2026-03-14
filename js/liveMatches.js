@@ -1,7 +1,3 @@
-/**
- * liveMatches.js – Fetches and renders live football matches in the aside widget.
- * Uses AllSportsAPI.
- */
 
 const ALLSPORTS_BASE = "https://apiv2.allsportsapi.com/football/";
 
@@ -31,8 +27,15 @@ function liveMatchCardHTML(match) {
   const awayLogo = match.away_team_logo || "";
   const homeName = match.event_home_team || "Home";
   const awayName = match.event_away_team || "Away";
-  const homeScore = match.event_home_final_result ?? "–";
-  const awayScore = match.event_away_final_result ?? "–";
+
+  // AllSportsAPI returns a combined score string like "2 - 1" in event_final_result
+  const finalResult = match.event_final_result || "";
+  const scoreParts = finalResult.split("-").map(s => s.trim());
+  const homeScore = scoreParts[0] || "–";
+  const awayScore = scoreParts[1] || "–";
+
+  // Show match status (e.g. "45'" for minute, "Half Time", "Finished", etc.)
+  const status = match.event_status || "";
 
   const homeLogoEl = homeLogo
     ? `<img class="live-team__logo" src="${escapeAttr(homeLogo)}" alt="${escapeAttr(homeName)}" loading="lazy">`
@@ -48,7 +51,10 @@ function liveMatchCardHTML(match) {
         ${homeLogoEl}
         <span class="live-team__name">${escapeHTML(homeName)}</span>
       </div>
-      <div class="live-score">${escapeHTML(String(homeScore))} – ${escapeHTML(String(awayScore))}</div>
+      <div class="live-score">
+        <span class="live-score__result">${escapeHTML(homeScore)} – ${escapeHTML(awayScore)}</span>
+        ${status ? `<span class="live-score__status">${escapeHTML(status)}</span>` : ""}
+      </div>
       <div class="live-team live-team--right">
         ${awayLogoEl}
         <span class="live-team__name">${escapeHTML(awayName)}</span>
