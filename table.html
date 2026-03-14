@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Dashboard – League Table</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="navbar__brand" aria-label="News Dashboard home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"/>
+        <path d="M15 2v6h6M9 15h6M9 11h6M9 7h2"/>
+      </svg>
+      NewsDash
+    </a>
+
+    <ul class="navbar__links" id="nav-links" role="list">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="matches.html">⚽ Matches</a></li>
+      <li><a href="table.html" class="active">📊 Table</a></li>
+      <li><a href="stats.html">🏅 Stats</a></li>
+    </ul>
+
+    <button class="navbar__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Page content ───────────────────────────────────────────────────── -->
+  <div class="page-wrapper">
+    <h1 class="page-title">📊 League Table</h1>
+
+    <!-- Legend -->
+    <div class="standings-legend" style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;font-size:.8rem;">
+      <span><span class="rank-badge rank-badge--cl" style="display:inline-flex;">1</span> UEFA Champions League</span>
+      <span><span class="rank-badge rank-badge--el" style="display:inline-flex;">5</span> UEFA Europa League</span>
+      <span><span class="rank-badge rank-badge--rel" style="display:inline-flex;">18</span> Relegation</span>
+    </div>
+
+    <!-- Table -->
+    <div class="standings-table-wrapper">
+      <table class="standings-table" id="standings-table" aria-label="League standings">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Logo</th>
+            <th scope="col" style="text-align:left;">Team</th>
+            <th scope="col" title="Played">P</th>
+            <th scope="col" title="Wins">W</th>
+            <th scope="col" title="Draws">D</th>
+            <th scope="col" title="Losses">L</th>
+            <th scope="col" title="Goals For">GF</th>
+            <th scope="col" title="Goals Against">GA</th>
+            <th scope="col" title="Goal Difference">GD</th>
+            <th scope="col" title="Points">Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="11">
+              <div class="spinner-wrap"><div class="spinner"></div></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>© 2024 NewsDash · Powered by AllSportsAPI</p>
+  </footer>
+
+  <!-- ── Scripts ────────────────────────────────────────────────────────── -->
+  <script src="config.js"></script>
+  <script src="js/table.js"></script>
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const navLinks  = document.getElementById("nav-links");
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("DOMContentLoaded", initTable);
+  </script>
+</body>
+</html>

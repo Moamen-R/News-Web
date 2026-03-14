@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Dashboard – Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>" />
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="navbar__brand" aria-label="News Dashboard home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"/>
+        <path d="M15 2v6h6M9 15h6M9 11h6M9 7h2"/>
+      </svg>
+      NewsDash
+    </a>
+
+    <ul class="navbar__links" id="nav-links" role="list">
+      <li><a href="index.html" class="active">🏠 Home</a></li>
+      <li><a href="matches.html">⚽ Matches</a></li>
+      <li><a href="table.html">📊 Table</a></li>
+      <li><a href="stats.html">🏅 Stats</a></li>
+    </ul>
+
+    <button class="navbar__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Page content ───────────────────────────────────────────────────── -->
+  <div class="page-wrapper">
+    <div class="home-layout">
+
+      <!-- ── Main: News feed ──────────────────────────────────────────── -->
+      <main id="news-container" aria-label="News feed">
+        <!-- News sections rendered dynamically by news.js -->
+        <div class="spinner-wrap"><div class="spinner"></div></div>
+      </main>
+
+      <!-- ── Aside: Widgets ───────────────────────────────────────────── -->
+      <aside class="aside-widgets" aria-label="Dashboard widgets">
+
+        <!-- 1. Weather widget -->
+        <div class="widget" id="weather-widget">
+          <div class="widget__title">
+            <span aria-hidden="true">🌤️</span> Weather
+          </div>
+          <div id="weather-body">
+            <div class="spinner-wrap"><div class="spinner spinner--sm"></div></div>
+          </div>
+        </div>
+
+        <!-- 2. Exchange Rates widget -->
+        <div class="widget" id="exchange-widget">
+          <div class="widget__title">
+            <span aria-hidden="true">💱</span> Exchange Rates (vs EGP)
+          </div>
+          <div class="rates-grid" id="rates-grid">
+            <div class="spinner-wrap" style="grid-column:1/-1">
+              <div class="spinner spinner--sm"></div>
+            </div>
+          </div>
+
+          <!-- Currency Converter -->
+          <div class="converter">
+            <p class="converter__title">💸 Currency Converter</p>
+            <div class="converter__row">
+              <input
+                type="number"
+                id="conv-amount"
+                class="converter__input"
+                placeholder="Amount"
+                value="1"
+                min="0"
+                step="any"
+                aria-label="Amount to convert"
+              />
+            </div>
+            <div class="converter__row">
+              <select id="conv-from" class="converter__select" aria-label="From currency"></select>
+              <button id="conv-swap" class="converter__swap" title="Swap currencies" aria-label="Swap currencies">⇄</button>
+              <select id="conv-to" class="converter__select" aria-label="To currency"></select>
+            </div>
+            <div class="converter__result" id="conv-result" aria-live="polite">—</div>
+          </div>
+        </div>
+
+        <!-- 3. Live Matches widget -->
+        <div class="widget" id="live-widget">
+          <div class="widget__title">
+            <span aria-hidden="true">🔴</span> Live Matches
+          </div>
+          <div id="live-matches-body">
+            <div class="spinner-wrap"><div class="spinner spinner--sm"></div></div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>© 2024 NewsDash · Powered by GNews, OpenWeatherMap, AllSportsAPI &amp; ExchangeRate-API</p>
+  </footer>
+
+  <!-- ── Scripts ────────────────────────────────────────────────────────── -->
+  <script src="config.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/exchange.js"></script>
+  <script src="js/liveMatches.js"></script>
+  <script>
+    // ── Mobile nav toggle ────────────────────────────────────────────────
+    const navToggle = document.getElementById("nav-toggle");
+    const navLinks  = document.getElementById("nav-links");
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    // ── Bootstrap widgets ────────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", () => {
+      // Remove initial spinner before news sections load
+      const initialSpinner = document.querySelector("#news-container .spinner-wrap");
+      if (initialSpinner) initialSpinner.remove();
+
+      initNews();
+      initWeather();
+      initExchange();
+      initLiveMatches();
+    });
+  </script>
+</body>
+</html>
