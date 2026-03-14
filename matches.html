@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Dashboard – Matches</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" />
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="navbar__brand" aria-label="News Dashboard home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"/>
+        <path d="M15 2v6h6M9 15h6M9 11h6M9 7h2"/>
+      </svg>
+      NewsDash
+    </a>
+
+    <ul class="navbar__links" id="nav-links" role="list">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="matches.html" class="active">⚽ Matches</a></li>
+      <li><a href="table.html">📊 Table</a></li>
+      <li><a href="stats.html">🏅 Stats</a></li>
+    </ul>
+
+    <button class="navbar__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Page content ───────────────────────────────────────────────────── -->
+  <div class="page-wrapper">
+    <h1 class="page-title">⚽ League Matches</h1>
+
+    <!-- Filters -->
+    <div class="filters-bar" role="search" aria-label="Filter matches">
+      <div class="filter-group">
+        <label for="filter-team">Filter by Team</label>
+        <input
+          type="search"
+          id="filter-team"
+          class="filter-input"
+          placeholder="e.g. Arsenal"
+          aria-label="Filter by team name"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-date">Filter by Date</label>
+        <input
+          type="date"
+          id="filter-date"
+          class="filter-input"
+          aria-label="Filter by date"
+        />
+      </div>
+
+      <button id="filter-reset" class="btn-reset" aria-label="Reset all filters">
+        ✕ Reset
+      </button>
+    </div>
+
+    <!-- Matches list -->
+    <div class="matches-list" id="matches-list" aria-label="Match results" aria-live="polite">
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>© 2024 NewsDash · Powered by AllSportsAPI</p>
+  </footer>
+
+  <!-- ── Scripts ────────────────────────────────────────────────────────── -->
+  <script src="config.js"></script>
+  <script src="js/matches.js"></script>
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const navLinks  = document.getElementById("nav-links");
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("DOMContentLoaded", initMatches);
+  </script>
+</body>
+</html>
